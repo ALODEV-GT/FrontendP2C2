@@ -1,0 +1,97 @@
+<mat-toolbar class="center contenedor-nombre-proyecto" color="primary">
+  <span>NUEVO PROYECTO</span>
+</mat-toolbar>
+
+<mat-toolbar class="contenedor-menu">
+  <button class="btn-pestanhia" [matMenuTriggerFor]="archivo">Archivo</button>
+  <button class="btn-pestanhia" [matMenuTriggerFor]="ejecucion">Ejecucion</button>
+  <span class="spacer"></span>
+  <span>@ALODEV</span>
+</mat-toolbar>
+
+<div class="container-fluid" style="padding-top: 10px;">
+  <div class="row">
+    <div class="col-3 contenedor-arbol-carpetas">
+      <div style="font-size: 14px; padding: 6px; color: rgb(105, 105, 105);">
+        Explorador
+      </div>
+      <mat-tree [treeControl]="treeControl " [dataSource]="dataSource" class="file-tree">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+          <button mat-icon-button disabled=>
+
+          </button>
+          {{node.name}}
+        </mat-tree-node>
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle [attr.atria-label]="'Toggle' + 'node.name'">
+            <mat-icon class="mat-icon-rt1-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          {{node.name}}
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+    <div class="col-9">
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <mat-tab label="MyClase.java X">
+          <div class="contenedor-editor">
+            <app-editor></app-editor>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
+      <div class="contenedor-consola">
+        <div class="pestanhias">
+          <button class="btn-pestanhia">Consola</button>
+          <button class="btn-pestanhia">Errores</button>
+        </div>
+        <div class="consola">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vestibulum bibendum mi, id efficitur metus
+          suscipit in. Vestibulum nec luctus mi, nec ultrices nunc. Nulla facilisi. In eget metus facilisis, egestas ex
+          nec, eleifend velit. Vivamus non tortor vel neque cursus laoreet. Aliquam erat volutpat. Phasellus id ipsum in
+          justo ullamcorper venenatis. Sed ac hendrerit arcu. Nullam non diam eget sapien fermentum condimentum. Vivamus
+          ut scelerisque risus. Vestibulum quis urna in mi fermentum blandit. Etiam varius nisl vel tortor tincidunt,
+          sit
+          amet varius nisl scelerisque. Suspendisse potenti.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-menu #archivo="matMenu">
+  <button mat-menu-item class="menu">
+    Nuevo proyecto
+  </button>
+  <button (click)="push()" mat-menu-item class="menu">
+    Nuevo archivo
+  </button>
+  <button mat-menu-item class="menu">
+    Abrir proyecto
+  </button>
+  <button mat-menu-item class="menu">
+    Abrir archivo
+  </button>
+  <button mat-menu-item class="menu">
+    Guardar
+  </button>
+  <button mat-menu-item class="menu">
+    Guardar como
+  </button>
+  <button mat-menu-item class="menu">
+    Cerrar proyecto
+  </button>
+</mat-menu>
+
+<mat-menu #ejecucion="matMenu">
+  <button mat-menu-item class="menu">
+    Ejecutar
+  </button>
+  <button mat-menu-item class="menu">
+    Traducir a C3D
+  </button>
+  <button mat-menu-item class="menu">
+    Traducir a Assembler
+  </button>
+</mat-menu>
