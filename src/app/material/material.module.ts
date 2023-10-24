@@ -8,8 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [],
@@ -22,7 +23,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatButtonModule,
     MatSnackBarModule,
     MatToolbarModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule
   ]
 })
 export class MaterialModule { }

@@ -69,3 +69,48 @@
   background-color: #272727;
   color: darkgoldenrod;
 }
+
+/* PARA EL ARBOL DE PAQUETES */
+
+.file-tree {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  min-height: 0;
+  overflow: auto;
+}
+
+.file-tree-invisible {
+  display: none;
+}
+
+.file-tree ul,
+.file-tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+.file-tree .mat-icon-button[disabled] {
+  display: none;
+}
+
+.file-tree .file-node-label {
+  display: flex;
+  cursor: pointer;
+  user-select: none;
+}
+
+.file-tree .file-node-label__icon {
+  float: left;
+}
+
+.file-tree .file-node-label__text {
+  float: left;
+  margin-top: 4px;
+  margin-left: 4px;
+  white-space: nowrap;
+}
