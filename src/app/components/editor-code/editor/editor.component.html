@@ -1,2 +1,7 @@
-<ngs-code-editor style="height: 100%" [theme]="theme" [codeModel]="codeModel" [options]="options">
-</ngs-code-editor>
+<ngx-codemirror [(ngModel)]="proyecto.archivo.code!.value" [options]="{
+    lineNumbers: true,
+    theme: 'darcula',
+    lineWrapping: true,
+    mode: 'text/x-java'
+  }">
+</ngx-codemirror>

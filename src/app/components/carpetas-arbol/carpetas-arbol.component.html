@@ -1,5 +1,5 @@
 <mat-toolbar class="center contenedor-nombre-proyecto" color="primary">
-  <span>NUEVO PROYECTO</span>
+  <span (click)="recorrer()">NUEVO PROYECTO</span>
 </mat-toolbar>
 
 <mat-toolbar class="contenedor-menu">
@@ -53,10 +53,18 @@
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
         <ng-container *ngFor="let editor of editors; let i = index">
-          <mat-tab label="MyClase.java X">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span>MyClase.java </span>
+              <button mat-icon-button (click)="cerrarTab(i)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </ng-template>
+
             <div class="contenedor-editor">
-              <app-editor></app-editor>
+              <app-editor style="width: 100px; height: 100px;" [proyecto]="editor"></app-editor>
             </div>
+
           </mat-tab>
         </ng-container>
 
@@ -105,7 +113,7 @@
 </mat-menu>
 
 <mat-menu #ejecucion="matMenu">
-  <button mat-menu-item class="menu">
+  <button (click)="ejecutar()" mat-menu-item class="menu">
     Ejecutar
   </button>
   <button mat-menu-item class="menu">

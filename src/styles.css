@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~codemirror/lib/codemirror';
+@import '~codemirror/theme/darcula';
+@import '~codemirror/theme/yonce';
 
 html, body {
   height: 100%;
@@ -9,3 +12,9 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: rgb(36, 36, 36);
 }
+
+.CodeMirror {
+  border: 1px solid #eee;
+  height: 100%;
+}
+

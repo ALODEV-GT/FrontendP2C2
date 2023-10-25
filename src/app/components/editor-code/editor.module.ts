@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EditorComponent } from './editor/editor.component';
-import { CodeEditorModule } from '@ngstack/code-editor';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -9,7 +11,8 @@ import { CodeEditorModule } from '@ngstack/code-editor';
   ],
   imports: [
     CommonModule,
-    CodeEditorModule.forRoot()
+    CodemirrorModule,
+    FormsModule
   ], exports: [
     EditorComponent
   ]
