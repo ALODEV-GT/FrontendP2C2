@@ -1,10 +1,21 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { Component } from '@angular/core';
 import { FileNode, FileNodeType } from './model/file-node';
 import { DialogBodyComponent } from '../dialog-body/dialog-body.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+//Prueba
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { CodeModel } from '@ngstack/code-editor';
+
+interface ExampleFlatNode {
+  expandable: boolean,
+  archivo: FileNode,
+  name: string,
+  type: FileNodeType,
+  level: number
+}
 
 let FILES_DATA: FileNode[] = [
   {
@@ -152,35 +163,50 @@ let FILES_DATA: FileNode[] = [
   styleUrls: ['./carpetas-arbol.component.css']
 })
 export class CarpetasArbolComponent {
-  nestedTreeControl: NestedTreeControl<FileNode>;
-  nestedDataSource: MatTreeNestedDataSource<FileNode>;
+  treeControl = new FlatTreeControl<ExampleFlatNode>(
+    node => node.level,
+    node => node.expandable
+  )
 
+  private _transformer = (node: FileNode, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      archivo: node,
+      name: node.name,
+      type: node.type,
+      level: level,
+    };
+  };
 
-  constructor(private matDialog: MatDialog, private snackBar: MatSnackBar, private cd: ChangeDetectorRef) {
-    this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
-    this.nestedDataSource = new MatTreeNestedDataSource();
-    this.nestedDataSource.data = FILES_DATA
+  treeFlattener = new MatTreeFlattener(
+    this._transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.children,
+  );
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
+  constructor(
+    private matDialog: MatDialog,
+    private snackBar: MatSnackBar,
+  ) {
+    this.dataSource.data = FILES_DATA;
   }
 
   nodoSelected: any
 
-  hasNestedChild(_: number, nodeData: FileNode): boolean {
-    return nodeData.type === FileNodeType.folder;
-  }
+  hasChild = (_: number, node: ExampleFlatNode) => node.expandable || node.type == FileNodeType.folder;
 
-  private _getChildren = (node: FileNode) => node.children;
-
-  //Para seleccionar un nodo
+  //Se ejecuta al seleccionar un archivo
   selectNode(node: FileNode) {
-    console.log(node);
-  }
-
-  crearCarpeta() {
-
-  }
-
-  crearArchivo() {
-
+    this.editors.push(
+      {
+        language: 'java',
+        uri: 'Main.java',
+        value: ''
+      }
+    )
   }
 
   //Dialog
@@ -192,6 +218,7 @@ export class CarpetasArbolComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (!(result.closed)) {
         if (result.isPackage) {
+          result.name = result.name.replace(/\s/g, "");
           if (result.name.trim() <= 0) {
             this.openSnackBar("Ingresa un nombre valido");
             return
@@ -199,14 +226,18 @@ export class CarpetasArbolComponent {
           //TODO: verificar si ya existe
 
           //TODO: agregar nodo al arbol
-          this.nodoSelected.children.push(
+          this.nodoSelected.archivo.children.push(
             {
               name: result.name,
-              type: FileNodeType.folder
+              type: FileNodeType.folder,
+              children: []
             }
           )
-          //this.openSnackBar("Paquete: " + result.name);
+          this.dataSource.data = [...FILES_DATA];
+          this.treeControl.expandAll();
+          this.openSnackBar(`Paquete ${result.name} creado`);
         } else {
+          result.name = result.name.replace(/\s/g, "");
           if (result.name.trim() <= 0) {
             this.openSnackBar("Ingresa un nombre valido");
             return
@@ -214,13 +245,15 @@ export class CarpetasArbolComponent {
           //TODO: verificar si ya existe
 
           //TODO: agregar nodo al arbol
-          this.nodoSelected.children.push(
+          this.nodoSelected.archivo.children.push(
             {
               name: result.name,
               type: FileNodeType.file
             }
           )
-          //this.openSnackBar("Archivo: " + result.name);
+          this.dataSource.data = [...FILES_DATA];
+          this.treeControl.expandAll();
+          this.openSnackBar(`Archivo ${result.name} creado`);
         }
       }
     })
@@ -228,7 +261,11 @@ export class CarpetasArbolComponent {
 
   //SnackBar
   openSnackBar(message: string) {
-    this.snackBar.open(message, "X", { duration: 1300 });
+    this.snackBar.open(message, "X", { duration: 2000 });
   }
+
+  //Editores
+  editors: CodeModel[] = [];
+
 
 }
